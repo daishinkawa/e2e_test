@@ -1,0 +1,32 @@
+{
+  "name": "e2e_test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:daishinkawa/e2e_test.git",
+  "author": "daishinkawa <dai.shinkawa@ops-in.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-preset-env": "^1.7.0",
+    "config": "^3.3.1",
+    "jest": "^26.0.1",
+    "jest-puppeteer": "^4.4.0",
+    "puppeteer": "^3.0.4"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:through": "yarn && yarn test:server:stop; yarn test:db:reset && yarn test:server:start && yarn test; yarn test:server:stop && yarn test:db:reset",
+    "test:server:start": "cd ../apps/web && RAILS_ENV=test rails s -d",
+    "test:server:stop": "kill -9 `cat ../apps/web/tmp/pids/server.pid`",
+    "test:server:restart": "yarn test:server:stop && yarn test:server:start",
+    "test:db:drop": "dropdb guidedent_test",
+    "test:db:create": "createdb -O multi guidedent_test && pg_dump -Ft guidedent | pg_restore -d guidedent_test",
+    "test:db:reset": "yarn test:db:drop; yarn test:db:create"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "babel-jest": "^26.0.1"
+  }
+}
